@@ -40,33 +40,33 @@
       <div class="auth-hero-pane">
         <div class="auth-hero-content">
           <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.15); padding: 0.35rem 0.8rem; border-radius: var(--radius-full); font-size: 0.78rem; font-weight: 600; margin-bottom: 1.25rem;">
-            <i class="fa-solid fa-sparkles"></i> Smart Campus Office 2.0
+            <i class="fa-solid fa-layer-group"></i> Smart Queuing
           </div>
           <h2>Your Time Matters.<br>Skip the Queue.</h2>
           <p>
-            Eliminate hours spent standing outside administrative offices. Generate virtual tokens, monitor real-time queue progress, and arrive right when it's your turn.
+            Generate virtual tokens and track live queue progress from anywhere.
           </p>
 
           <div class="feature-list">
             <div class="feature-item">
               <i class="fa-solid fa-ticket-simple"></i>
               <div>
-                <h4>Instant Virtual Tokens</h4>
-                <p>Request services online from anywhere inside or outside campus.</p>
+                <h4>Virtual Tokens</h4>
+                <p>Request services online anytime.</p>
               </div>
             </div>
             <div class="feature-item">
               <i class="fa-solid fa-clock-rotate-left"></i>
               <div>
-                <h4>Smart Wait Estimation</h4>
-                <p>Dynamic calculations based on active counters and queue load.</p>
+                <h4>Live Wait Time</h4>
+                <p>Real-time queue estimates.</p>
               </div>
             </div>
             <div class="feature-item">
               <i class="fa-solid fa-bell"></i>
               <div>
-                <h4>Live Counter Tracking</h4>
-                <p>Get notified when your token is called to the service counter.</p>
+                <h4>Desk Alerts</h4>
+                <p>Instant notification when called.</p>
               </div>
             </div>
           </div>
@@ -75,25 +75,25 @@
         <div class="live-ticker-badge">
           <div style="display: flex; align-items: center;">
             <span class="pulse-dot"></span>
-            <span style="font-size: 0.82rem; font-weight: 600;">Office Counters Active Now:</span>
+            <span style="font-size: 0.82rem; font-weight: 600;">Active Counters:</span>
           </div>
-          <span style="font-size: 0.85rem; font-weight: 700; color: #93c5fd;" id="active-counters-counter">4 Counters Online</span>
+          <span style="font-size: 0.85rem; font-weight: 700; color: #93c5fd;" id="active-counters-counter">4 Online</span>
         </div>
       </div>
 
       <!-- Right Form Pane -->
       <div class="auth-form-pane">
         <div class="auth-form-header">
-          <h3>Sign in to QueueLess</h3>
-          <p>Enter your institutional credentials or use quick demo access</p>
+          <h3>Sign In</h3>
+          <p>Enter your credentials to continue</p>
         </div>
 
         <form id="login-form">
           <div class="form-group">
-            <label class="form-label" for="login-email">Email or Register / Staff ID</label>
+            <label class="form-label" for="login-email">Email or College ID</label>
             <div class="input-with-icon">
               <i class="fa-solid fa-envelope icon-prefix"></i>
-              <input type="email" id="login-email" class="form-control" placeholder="student@college.edu or 21BCE1042" required autocomplete="email">
+              <input type="email" id="login-email" class="form-control" placeholder="Email or ID" required autocomplete="email">
             </div>
           </div>
 
@@ -104,7 +104,7 @@
             </div>
             <div class="input-with-icon">
               <i class="fa-solid fa-lock icon-prefix"></i>
-              <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required autocomplete="current-password">
+              <input type="password" id="login-password" class="form-control" placeholder="Password" required autocomplete="current-password">
               <button type="button" class="toggle-password" id="toggle-password-btn" aria-label="Toggle password visibility">
                 <i class="fa-regular fa-eye"></i>
               </button>
@@ -114,7 +114,7 @@
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.4rem;">
             <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--slate-600); cursor: pointer;">
               <input type="checkbox" id="remember-me" checked style="accent-color: var(--primary-600);">
-              Remember this device
+              Remember me
             </label>
           </div>
 
@@ -126,34 +126,24 @@
         <!-- Quick 1-Click Demo Logins -->
         <div class="demo-accounts-section">
           <div class="demo-pills-label">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> One-Click Demo Access
+            <i class="fa-solid fa-bolt"></i> Quick Demo Access
           </div>
 
           <div class="demo-buttons-grid">
-            <button type="button" class="demo-btn student" id="demo-student-btn" title="Login as Student (Aarav Patel)">
+            <button type="button" class="demo-btn student" id="demo-student-btn" title="Login as Student">
               <i class="fa-solid fa-user-graduate"></i>
               <span class="role-title">Student</span>
-              <span class="role-desc">student@college.edu</span>
             </button>
 
-            <button type="button" class="demo-btn staff" id="demo-staff-btn" title="Login as Office Staff (Mrs. Rekha Sharma)">
+            <button type="button" class="demo-btn staff" id="demo-staff-btn" title="Login as Staff">
               <i class="fa-solid fa-user-tie"></i>
               <span class="role-title">Staff</span>
-              <span class="role-desc">staff@college.edu</span>
             </button>
 
-            <button type="button" class="demo-btn admin" id="demo-admin-btn" title="Login as Administrator (Dean Office)">
+            <button type="button" class="demo-btn admin" id="demo-admin-btn" title="Login as Admin">
               <i class="fa-solid fa-shield-halved"></i>
               <span class="role-title">Admin</span>
-              <span class="role-desc">admin@college.edu</span>
             </button>
-          </div>
-
-          <div class="disclaimer-banner">
-            <i class="fa-solid fa-circle-info" style="color: var(--primary-600);"></i>
-            <span>
-              <strong>Demo Prototype:</strong> Standard demo password is <code>Queue123!</code>. Client-side authentication is for demonstration only.
-            </span>
           </div>
         </div>
 
@@ -171,7 +161,7 @@
       </div>
       <div class="modal-body">
         <p style="font-size: 0.88rem; color: var(--slate-600); margin-bottom: 1.25rem;">
-          In this prototype environment, enter your registered college email address to receive mock password reset instructions.
+          Enter your registered college email address to receive password reset instructions.
         </p>
         <div class="form-group">
           <label class="form-label" for="recovery-email">College Email ID</label>
