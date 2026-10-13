@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QueueLess Project Presentation – S VINOTH (240701592)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #0f172a;
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .deck-container {
+      width: 100%;
+      max-width: 1200px;
+      aspect-ratio: 16 / 9;
+      background-color: #f8fafc;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .slide {
+      flex: 1;
+      padding: 2.2rem 3rem;
+      display: none;
+      flex-direction: column;
+      animation: fadeIn 0.3s ease;
+    }
+    .slide.active {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .slide-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+    .category-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #bfdbfe;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .slide-counter {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #64748b;
+    }
+    .slide-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 1.25rem;
+    }
+    .slide-content-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 1.8rem;
+      align-items: stretch;
+    }
+    .content-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.4rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .visual-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .visual-card img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .card-heading {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .bullet-item {
+      margin-bottom: 0.6rem;
+      color: #334155;
+    }
+    .bullet-item strong {
+      color: #0f172a;
+    }
+    /* Slide 1 Custom Style */
+    .slide-1-hero {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .hero-banner {
+      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hero-banner h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+    }
+    .hero-banner h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #93c5fd;
+      margin-bottom: 0.5rem;
+    }
+    .hero-banner p.tagline {
+      font-size: 1rem;
+      font-style: italic;
+      color: #dbeafe;
+      margin-bottom: 1.5rem;
+    }
+    .presenter-badge {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .presenter-badge .label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #2563eb;
+      margin-bottom: 0.2rem;
+    }
+    .presenter-badge .name {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .presenter-badge .roll {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e40af;
+      margin-top: 0.15rem;
+    }
+    .presenter-badge .meta {
+      font-size: 0.78rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+    /* Bottom Nav Bar */
+    .deck-footer {
+      height: 60px;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .deck-footer .foot-info {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+    .nav-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .btn-slide {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.15s;
+    }
+    .btn-slide:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+    .btn-slide.primary {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+    }
+    .btn-slide.primary:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-container">
+    
+    <!-- ==============================================================
+         SLIDE 1: TITLE SLIDE
+         ============================================================== -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-1-hero">
+        <div class="hero-banner">
+          <div>
+            <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.18); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; margin-bottom: 1.2rem; letter-spacing: 0.04em;">
+              <i class="fa-solid fa-graduation-cap"></i> SMART CAMPUS CAPSTONE PROJECT
+            </div>
+            <h1>QueueLess</h1>
+            <h2>Smart College Queue & Token Management System</h2>
+            <p class="tagline">"Your Time Matters. Skip the Queue."</p>
+          </div>
+
+          <div class="presenter-badge">
+            <div class="label">PROJECT PRESENTER</div>
+            <div class="name">S VINOTH</div>
+            <div class="roll"><i class="fa-solid fa-id-card"></i> Roll Number: 240701592</div>
+            <div class="meta">Department of Computer Science & Engineering • Academic Evaluation</div>
+          </div>
+        </div>
+
+        <div class="visual-card" style="padding: 1.5rem; background: #ffffff;">
+          <img src="presentation_assets/slide1_token.png" alt="QueueLess Digital Token Pass">
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         SLIDE 2: PROBLEM STATEMENT & OBJECTIVES
+         ============================================================== -->
+    <div class="slide" id="slide-2">
+      <div class="slide-topbar">
+        <span class="category-pill"><i class="fa-solid fa-triangle-exclamation"></i> Background & Motivation</span>
+        <span class="slide-counter">2 / 6</span>
+      </div>
+      <h2 class="slide-title">Problem Statement & Project Objectives</h2>
+
+      <div class="slide-content-grid">
+        <div class="content-card">
+          <div>
+            <div class="card-heading" style="color: #dc2626;"><i class="fa-solid fa-circle-xmark"></i> The Campus Challenge</div>
+            <div class="bullet-item"><strong>Physical Queue Congestion:</strong> Students wait 45 to 90 minutes outside Administrative, Accounts, and Examination desks.</div>
+            <div class="bullet-item"><strong>Disrupted Academics:</strong> Unpredictable waiting times force students to miss lectures, lab sessions, and submission hours.</div>
+            <div class="bullet-item"><strong>Administrative Bottlenecks:</strong> Staff are overwhelmed by peak crowds and unorganized inquiries.</div>
+          </div>
+
+          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed #e2e8f0;">
+            <div class="card-heading" style="color: #059669;"><i class="fa-solid fa-circle-check"></i> Project Objectives</div>
+            <div class="bullet-item"><strong>100% Virtual Token Generation:</strong> Request college services remotely without physical queuing.</div>
+            <div class="bullet-item"><strong>Mathematical Wait-Time Calculation:</strong> Dynamically compute wait time based on active desk capacity.</div>
+            <div class="bullet-item"><strong>Live Multi-Stage Tracker:</strong> 5-stage progression from request to counter completion.</div>
+          </div>
+        </div>
+
+        <div class="visual-card">
+          <img src="presentation_assets/slide2_comparison.png" alt="Before vs After Comparison">
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         SLIDE 3: SYSTEM ARCHITECTURE & TECH STACK
+         ============================================================== -->
+    <div class="slide" id="slide-3">
+      <div class="slide-topbar">
+        <span class="category-pill"><i class="fa-solid fa-network-wired"></i> Architecture & Engineering</span>
+        <span class="slide-counter">3 / 6</span>
+      </div>
+      <h2 class="slide-title">System Architecture & Technology Stack</h2>
+
+      <div class="slide-content-grid">
+        <div class="content-card">
+          <div>
+            <div class="card-heading"><i class="fa-solid fa-layer-group"></i> Architectural Architecture</div>
+            <div class="bullet-item"><strong>Single-Page Architecture (SPA):</strong> High-performance client-side interface with modular controllers.</div>
+            <div class="bullet-item"><strong>LocalStorage Storage Engine:</strong> Persists tokens, counters, staff workload, and profile records locally.</div>
+            <div class="bullet-item"><strong>Cross-Tab Reactive Sync:</strong> Utilizes <code>StorageEvent</code> channels so staff actions immediately update student trackers across open tabs.</div>
+          </div>
+
+          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed #e2e8f0;">
+            <div class="card-heading" style="color: #7c3aed;"><i class="fa-solid fa-microchip"></i> Technology Stack</div>
+            <div class="bullet-item"><strong>Frontend:</strong> HTML5 Semantic UI, CSS3 Modern SaaS Design System, Vanilla JavaScript (ES6+).</div>
+            <div class="bullet-item"><strong>Typography & Icons:</strong> Google Fonts (Inter) & Font Awesome 6.5.</div>
+            <div class="bullet-item"><strong>Hosting & CI/CD:</strong> GitHub Pages with automated GitHub Actions workflow.</div>
+          </div>
+        </div>
+
+        <div class="visual-card">
+          <img src="presentation_assets/slide3_architecture.png" alt="System Architecture Diagram">
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         SLIDE 4: KEY MODULES & CORE FUNCTIONALITY
+         ============================================================== -->
+    <div class="slide" id="slide-4">
+      <div class="slide-topbar">
+        <span class="category-pill"><i class="fa-solid fa-cubes"></i> Core Modules</span>
+        <span class="slide-counter">4 / 6</span>
+      </div>
+      <h2 class="slide-title">Key Modules & Role-Based Workflows</h2>
+
+      <div class="slide-content-grid">
+        <div class="content-card">
+          <div class="bullet-item"><strong>1. Student Portal (16 College Services):</strong> Bonafide certificates, transfer certificates, semester transcripts, fee receipts, and clearances with document checklist confirmation.</div>
+          <div class="bullet-item"><strong>2. Live 5-Stage Queue Tracker:</strong> Visual stepper progress (Generated ➔ Waiting ➔ Called ➔ Processing ➔ Completed) with live position & wait times.</div>
+          <div class="bullet-item"><strong>3. Staff Control Console:</strong> Counter assignment (Counters 1 to 4), desk statuses (Serving, Available, Paused, Offline), and call/process/complete deck.</div>
+          <div class="bullet-item"><strong>4. Administrator Center:</strong> Service CRUD operations, prefix customization, staff workload distribution, and 1-click factory demo data reset.</div>
+        </div>
+
+        <div class="visual-card">
+          <img src="presentation_assets/slide4_modules.png" alt="4 Key Modules Diagram">
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         SLIDE 5: MATHEMATICAL QUEUE ESTIMATION & WORKFLOW
+         ============================================================== -->
+    <div class="slide" id="slide-5">
+      <div class="slide-topbar">
+        <span class="category-pill"><i class="fa-solid fa-calculator"></i> Algorithmic Logic</span>
+        <span class="slide-counter">5 / 6</span>
+      </div>
+      <h2 class="slide-title">Smart Waiting-Time Estimation & Lifecycle</h2>
+
+      <div class="slide-content-grid">
+        <div class="content-card">
+          <div>
+            <div class="card-heading"><i class="fa-solid fa-square-root-variable"></i> Mathematical Formula</div>
+            <div style="background: #eff6ff; padding: 0.8rem; border-radius: 8px; border: 1px solid #bfdbfe; font-family: monospace; font-size: 0.85rem; color: #1e40af; margin-bottom: 0.75rem;">
+              Est. Wait = (Sum of Durations of Students Ahead) ÷ (Active Counters)
+            </div>
+            <div class="bullet-item"><strong>Segmented Queues:</strong> Calculated independently per service and department.</div>
+            <div class="bullet-item"><strong>Desk Status Aware:</strong> Pausing a desk dynamically recalculates student wait times in real time.</div>
+          </div>
+
+          <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px dashed #e2e8f0;">
+            <div class="card-heading" style="color: #059669;"><i class="fa-solid fa-scale-balanced"></i> Fairness & Priority Rules</div>
+            <div class="bullet-item"><strong>Strict FIFO:</strong> Tokens served strictly in creation order.</div>
+            <div class="bullet-item"><strong>Audited Urgent Cases:</strong> Administrative urgent priority requires logged justification.</div>
+          </div>
+        </div>
+
+        <div class="visual-card">
+          <img src="presentation_assets/slide5_formula.png" alt="Mathematical Queue Formula and Stepper">
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         SLIDE 6: RESULTS, LIVE DEMO & CONCLUSION
+         ============================================================== -->
+    <div class="slide" id="slide-6">
+      <div class="slide-topbar">
+        <span class="category-pill"><i class="fa-solid fa-rocket"></i> Evaluation & Conclusion</span>
+        <span class="slide-counter">6 / 6</span>
+      </div>
+      <h2 class="slide-title">Project Outcomes, Live Demo & Conclusion</h2>
+
+      <div class="slide-content-grid">
+        <div class="content-card">
+          <div>
+            <div class="card-heading" style="color: #059669;"><i class="fa-solid fa-trophy"></i> Key Achievements</div>
+            <div class="bullet-item"><strong>100% Elimination of Physical Queues:</strong> Students wait anywhere on campus until called.</div>
+            <div class="bullet-item"><strong>65% Reduction in Wait Anxiety:</strong> Real-time rank and estimated time visibility.</div>
+            <div class="bullet-item"><strong>Optimized Staff Throughput:</strong> Streamlined processing with document pre-checks.</div>
+          </div>
+
+          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed #e2e8f0;">
+            <div class="card-heading"><i class="fa-solid fa-globe"></i> Live Deployment & Future Scope</div>
+            <div class="bullet-item"><strong>Live URL:</strong> <a href="https://itzvinoth04-design.github.io/SMART_TOKEN_SYSTEM/" target="_blank" style="color: #2563eb; font-weight: 700;">itzvinoth04-design.github.io/SMART_TOKEN_SYSTEM/</a></div>
+            <div class="bullet-item"><strong>Future Scope:</strong> SMS/WhatsApp notifications and RFID self-service entry kiosks.</div>
+          </div>
+        </div>
+
+        <div class="visual-card">
+          <img src="presentation_assets/slide6_outcomes.png" alt="Project Outcomes and Deployment Link">
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         DECK CONTROLS FOOTER
+         ============================================================== -->
+    <div class="deck-footer">
+      <div class="foot-info">
+        <strong>QueueLess</strong> • Presenter: <strong>S VINOTH (240701592)</strong>
+      </div>
+
+      <div class="nav-btn-group">
+        <a href="QueueLess_Project_Presentation.pptx" download class="btn-slide" title="Download editable PowerPoint PPTX file">
+          <i class="fa-solid fa-download"></i> Download .PPTX
+        </a>
+        <button type="button" class="btn-slide" id="btn-prev" onclick="prevSlide()">
+          <i class="fa-solid fa-chevron-left"></i> Previous
+        </button>
+        <button type="button" class="btn-slide primary" id="btn-next" onclick="nextSlide()">
+          Next <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 6;
+
+    function showSlide(n) {
+      if (n < 1) n = 1;
+      if (n > totalSlides) n = totalSlides;
+      currentSlide = n;
+
+      for (let i = 1; i <= totalSlides; i++) {
+        const el = document.getElementById(`slide-${i}`);
+        if (el) el.classList.toggle('active', i === currentSlide);
+      }
+
+      document.getElementById('btn-prev').disabled = currentSlide === 1;
+      document.getElementById('btn-next').disabled = currentSlide === totalSlides;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) showSlide(currentSlide - 1);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+  </script>
+</body>
+</html>
