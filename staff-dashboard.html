@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Control Deck – QueueLess Campus Queue Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="staff-dashboard.html" class="sidebar-brand">
+          <div class="logo-icon" style="width: 32px; height: 32px; font-size: 1rem; background: linear-gradient(135deg, var(--accent-600), var(--primary-600));">
+            <i class="fa-solid fa-headset"></i>
+          </div>
+          <span>QueueLess</span>
+          <span class="brand-badge" style="background: var(--accent-100); color: var(--accent-700);">Staff</span>
+        </a>
+      </div>
+
+      <div class="sidebar-role-indicator" style="background-color: var(--accent-50);">
+        <div class="role-avatar sync-user-initials" style="background: linear-gradient(135deg, var(--accent-600), var(--primary-600));">RS</div>
+        <div class="role-info">
+          <div class="role-name sync-user-name">Mrs. Rekha Sharma</div>
+          <div class="role-title-tag sync-user-dept">Counter 1 • Admin Office</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Queue Operations</div>
+        <a href="#deck" class="nav-link active" data-tab="deck">
+          <div class="nav-left">
+            <i class="fa-solid fa-desktop"></i>
+            <span>Queue Desk</span>
+          </div>
+        </a>
+        <a href="#queue-table" class="nav-link" data-tab="queue-table">
+          <div class="nav-left">
+            <i class="fa-solid fa-list-ol"></i>
+            <span>Live Queue Table</span>
+          </div>
+          <span class="nav-badge" id="staff-sidebar-waiting-badge">6</span>
+        </a>
+        <a href="#counters" class="nav-link" data-tab="counters">
+          <div class="nav-left">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            <span>Counters Management</span>
+          </div>
+        </a>
+
+        <div class="nav-section-title">Reports & Evaluation</div>
+        <a href="#performance" class="nav-link" data-tab="performance">
+          <div class="nav-left">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Staff Performance</span>
+          </div>
+        </a>
+        <a href="#service-requests" class="nav-link" data-tab="service-requests">
+          <div class="nav-left">
+            <i class="fa-solid fa-folder-closed"></i>
+            <span>Request Archive</span>
+          </div>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="btn btn-secondary btn-sm" data-action-logout style="width: 100%; justify-content: flex-start;">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Top Navbar -->
+      <header class="top-navbar">
+        <div class="nav-left-bar">
+          <button type="button" class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Open menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-breadcrumb">
+            <span>Staff Console</span>
+            <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+            <span class="current">Queue Desk</span>
+          </div>
+        </div>
+
+        <div class="nav-right-bar">
+          <!-- Role Switcher Dropdown (Demo Helper) -->
+          <div class="role-switcher-dropdown">
+            <button class="role-switcher-btn" id="role-switch-pill" title="Switch Demo View">
+              <i class="fa-solid fa-user-tie" style="color: var(--accent-600);"></i>
+              <span>Role: <strong>Staff</strong></span>
+              <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem;"></i>
+            </button>
+            <div class="notifications-dropdown" id="role-menu-dropdown" style="width: 200px; padding: 0.4rem;">
+              <a href="#" class="nav-link" data-switch-role="Student" style="font-size: 0.82rem; padding: 0.5rem;"><i class="fa-solid fa-user-graduate"></i> Student View</a>
+              <a href="#" class="nav-link" data-switch-role="Staff" style="font-size: 0.82rem; padding: 0.5rem;"><i class="fa-solid fa-user-tie"></i> Staff View</a>
+              <a href="#" class="nav-link" data-switch-role="Admin" style="font-size: 0.82rem; padding: 0.5rem;"><i class="fa-solid fa-shield-halved"></i> Admin View</a>
+            </div>
+          </div>
+
+          <!-- Notification Bell -->
+          <div class="notification-menu-wrapper">
+            <button class="nav-icon-btn" id="notif-bell-btn" aria-label="Notifications">
+              <i class="fa-regular fa-bell"></i>
+              <span class="notif-badge-count" id="notif-badge-count" style="display: none;">0</span>
+            </button>
+
+            <!-- Dropdown -->
+            <div class="notifications-dropdown" id="notifications-dropdown">
+              <div class="dropdown-header">
+                <h4>Staff Notifications</h4>
+                <button type="button" id="btn-mark-all-read" style="font-size: 0.72rem; color: var(--primary-600); font-weight: 600;">Mark all read</button>
+              </div>
+              <div class="notifications-list" id="notifications-dropdown-list">
+                <!-- Injected via app.js -->
+              </div>
+              <div class="dropdown-footer">
+                <span class="text-xs text-muted">Real-time alerts</span>
+                <button type="button" id="btn-clear-notifications">Clear</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Menu -->
+          <div class="user-profile-menu">
+            <div class="user-avatar-sm sync-user-initials" style="background: linear-gradient(135deg, var(--accent-600), var(--primary-600));">RS</div>
+            <div class="user-meta-sm">
+              <span class="name sync-user-name">Mrs. Rekha Sharma</span>
+              <span class="dept">Admin Officer</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Body Container -->
+      <main class="content-body">
+        
+        <!-- Active Counter Toolbar -->
+        <div class="counter-selection-bar">
+          <div class="counter-info-group">
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span class="text-xs text-muted">Assigned Desk:</span>
+              <select id="staff-active-counter-select" class="form-control" style="width: auto; font-weight: 700; padding: 0.4rem 0.8rem;">
+                <!-- Populated dynamically via staff.js -->
+              </select>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span class="text-xs text-muted">Desk Status:</span>
+              <select id="staff-counter-status-toggle" class="form-control" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.82rem; font-weight: 600;">
+                <option value="Serving">🟢 Serving Students</option>
+                <option value="Available">🔵 Available (Idle)</option>
+                <option value="Paused">🟡 Paused (Break)</option>
+                <option value="Offline">⚪ Offline</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.8rem;">
+            <button class="btn btn-secondary btn-sm" id="btn-demo-inject-student" title="Simulate a new student requesting a token">
+              <i class="fa-solid fa-user-plus"></i> Simulate New Student Arrival
+            </button>
+            <button class="btn btn-secondary btn-sm" id="btn-refresh-staff-deck">
+              <i class="fa-solid fa-arrows-rotate"></i> Sync
+            </button>
+          </div>
+        </div>
+
+        <!-- =================================================================
+             VIEW 1: QUEUE DESK (MAIN CONTROL CONSOLE)
+             ================================================================= -->
+        <section class="view-pane active" id="view-deck">
+          
+          <!-- KPI Metric Cards -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon amber">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value" id="kpi-staff-waiting">6</span>
+                <span class="stat-label">Waiting in Queue</span>
+                <span class="stat-trend trend-down"><i class="fa-solid fa-clock"></i> Across all services</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon violet">
+                <i class="fa-solid fa-bullhorn"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value" id="kpi-staff-called">1</span>
+                <span class="stat-label">Students Called</span>
+                <span class="stat-trend text-muted"><i class="fa-solid fa-person-walking"></i> Approaching desk</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon blue">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value" id="kpi-staff-processing">1</span>
+                <span class="stat-label">In Progress Now</span>
+                <span class="stat-trend trend-up"><i class="fa-solid fa-stopwatch"></i> Under verification</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon green">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value" id="kpi-staff-completed">18</span>
+                <span class="stat-label">Completed Today</span>
+                <span class="stat-trend trend-up"><i class="fa-solid fa-chart-line"></i> At this counter</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon blue">
+                <i class="fa-solid fa-stopwatch"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value" id="kpi-staff-avg-time">4.8 min</span>
+                <span class="stat-label">Average Service Time</span>
+                <span class="stat-trend text-muted"><i class="fa-solid fa-bolt"></i> Fast processing</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRIMARY STAFF CONTROL DECK -->
+          <div class="staff-action-deck">
+            <div class="deck-current-serving" id="deck-serving-spotlight">
+              <!-- Dynamically populated via staff.js -->
+            </div>
+
+            <!-- Action Buttons Grid -->
+            <div class="deck-controls-grid">
+              <button type="button" class="btn btn-primary btn-lg" id="btn-call-next-student">
+                <i class="fa-solid fa-bullhorn"></i> Call Next Student
+              </button>
+
+              <button type="button" class="btn btn-secondary" id="btn-recall-current-student">
+                <i class="fa-solid fa-volume-high"></i> Recall Current
+              </button>
+
+              <button type="button" class="btn btn-outline" id="btn-start-processing-student" style="color: var(--primary-700); border-color: var(--primary-500);">
+                <i class="fa-solid fa-play"></i> Start Processing
+              </button>
+
+              <button type="button" class="btn btn-success" id="btn-mark-completed-student">
+                <i class="fa-solid fa-check-double"></i> Mark Completed
+              </button>
+
+              <button type="button" class="btn btn-warning" id="btn-skip-token-student">
+                <i class="fa-solid fa-forward"></i> Skip Token
+              </button>
+
+              <button type="button" class="btn btn-danger" id="btn-cancel-request-student">
+                <i class="fa-solid fa-ban"></i> Cancel Request
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Queue Table in Desk -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-list-check"></i>
+                <span>Immediate Queue for This Counter</span>
+              </div>
+              <button class="btn btn-sm btn-secondary" onclick="window.location.hash='queue-table';">
+                View All Queues <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+            <div class="table-responsive" style="border: none;">
+              <table class="custom-table" id="desk-queue-table">
+                <thead>
+                  <tr>
+                    <th>Token #</th>
+                    <th>Student Details</th>
+                    <th>Service</th>
+                    <th>Wait Time</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="desk-queue-table-body">
+                  <!-- Populated dynamically via staff.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- =================================================================
+             VIEW 2: FULL LIVE QUEUE MANAGEMENT TABLE
+             ================================================================= -->
+        <section class="view-pane" id="view-queue-table">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h2>Master Queue Management</h2>
+              <p>Filter, search, review student documents, and call tokens across departments</p>
+            </div>
+            <div style="display: flex; gap: 0.6rem;">
+              <button class="btn btn-secondary btn-sm" id="btn-flag-urgent-priority-modal">
+                <i class="fa-solid fa-bolt" style="color: var(--danger-main);"></i> Flag Urgent Case
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <div class="table-filter-header">
+              <div class="search-input-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="queue-search-input" placeholder="Search token, student name, or reg no...">
+              </div>
+
+              <div class="filter-controls-group" style="flex-wrap: wrap;">
+                <select id="queue-dept-filter" class="form-control" style="width: 170px; padding: 0.45rem 0.8rem; font-size: 0.82rem;">
+                  <option value="all">All Departments</option>
+                  <option value="Administrative Office">Admin Office</option>
+                  <option value="Accounts Office">Accounts Office</option>
+                  <option value="Examination Cell">Examination Cell</option>
+                  <option value="Student Affairs">Student Affairs</option>
+                  <option value="Student Support">Student Support</option>
+                </select>
+
+                <select id="queue-status-filter" class="form-control" style="width: 150px; padding: 0.45rem 0.8rem; font-size: 0.82rem;">
+                  <option value="all">All Statuses</option>
+                  <option value="Waiting" selected>Waiting</option>
+                  <option value="Called">Called</option>
+                  <option value="Processing">Processing</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+            </div>
+
+            <table class="custom-table" id="master-queue-table">
+              <thead>
+                <tr>
+                  <th>Token #</th>
+                  <th>Student Info</th>
+                  <th>Requested Service</th>
+                  <th>Department</th>
+                  <th>Issue Time</th>
+                  <th>Wait Duration</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="master-queue-table-body">
+                <!-- Populated dynamically via staff.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             VIEW 3: COUNTER MANAGEMENT
+             ================================================================= -->
+        <section class="view-pane" id="view-counters">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h2>Campus Office Counters</h2>
+              <p>Real-time availability, staff assignment, and active workload across all 4 desks</p>
+            </div>
+          </div>
+
+          <div class="services-grid" id="counters-cards-grid">
+            <!-- Populated dynamically via staff.js -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             VIEW 4: STAFF PERFORMANCE & ANALYTICS
+             ================================================================= -->
+        <section class="view-pane" id="view-performance">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h2>Staff Productivity & Counter Metrics</h2>
+              <p>Daily performance audit, average turnaround time, and department throughput</p>
+            </div>
+          </div>
+
+          <div class="analytics-grid">
+            <div class="chart-card">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Completed Requests by Service</span>
+              </div>
+              <p class="text-xs text-muted">Distribution of requests completed today at this counter</p>
+              <div class="css-bar-chart" id="chart-staff-service-distribution">
+                <!-- CSS bar chart injected by staff.js -->
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="card-title">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Counter Utilization & Desk Uptime</span>
+              </div>
+              <p class="text-xs text-muted">Operational hours spent serving vs idle time</p>
+              <div class="css-bar-chart" id="chart-staff-utilization">
+                <!-- CSS bar chart injected by staff.js -->
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-clipboard-user"></i>
+                <span>Staff Members Workload Summary</span>
+              </div>
+            </div>
+            <div class="table-responsive" style="border: none;">
+              <table class="custom-table" id="staff-summary-table">
+                <thead>
+                  <tr>
+                    <th>Staff Name</th>
+                    <th>Assigned Counter</th>
+                    <th>Department</th>
+                    <th>Students Served Today</th>
+                    <th>Avg Service Time</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="staff-summary-table-body">
+                  <!-- Injected via staff.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             VIEW 5: SERVICE REQUESTS ARCHIVE
+             ================================================================= -->
+        <section class="view-pane" id="view-service-requests">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h2>Service Requests Audit</h2>
+              <p>Historical log of all requests processed today with staff notes and timestamps</p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="custom-table" id="archive-requests-table">
+              <thead>
+                <tr>
+                  <th>Token #</th>
+                  <th>Student</th>
+                  <th>Service</th>
+                  <th>Assigned Counter</th>
+                  <th>Processing Time</th>
+                  <th>Status</th>
+                  <th>Staff Remarks</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="archive-requests-table-body">
+                <!-- Injected via staff.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       MODAL 1: SERVICE REQUEST DETAILS & ACTIONS
+       ================================================================= -->
+  <div class="modal-backdrop" id="modal-staff-token-details">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-file-signature" style="color: var(--primary-600);"></i> Inspect Service Application</h3>
+        <button class="close-btn" data-modal-close="modal-staff-token-details"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="staff-token-details-modal-body">
+        <!-- Injected via staff.js -->
+      </div>
+      <div class="modal-footer" id="staff-token-details-modal-footer">
+        <!-- Dynamic action buttons based on token status -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       MODAL 2: REJECT / REQUEST ADDITIONAL DOCS REASON MODAL
+       ================================================================= -->
+  <div class="modal-backdrop" id="modal-staff-action-reason">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header" id="reason-modal-header">
+        <h3 id="reason-modal-title"><i class="fa-solid fa-circle-exclamation"></i> Action Required</h3>
+        <button class="close-btn" data-modal-close="modal-staff-action-reason"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm" id="reason-modal-instructions" style="margin-bottom: 1rem; color: var(--slate-700);">
+          Please state the administrative reason for this action. This will be recorded and notified to the student.
+        </p>
+        <div class="form-group">
+          <label class="form-label">Mandatory Administrative Reason / Missing Docs</label>
+          <textarea id="staff-action-reason-text" class="form-control" rows="3" placeholder="e.g. Missing HOD recommendation letter, Payment receipt unverified..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close="modal-staff-action-reason">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btn-submit-staff-reason">Confirm Action</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       MODAL 3: FLAG URGENT ADMINISTRATIVE PRIORITY MODAL
+       ================================================================= -->
+  <div class="modal-backdrop" id="modal-urgent-priority">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header" style="background-color: var(--danger-bg); border-bottom-color: var(--danger-border);">
+        <h3 style="color: var(--danger-text);"><i class="fa-solid fa-bolt"></i> Flag Urgent Administrative Priority</h3>
+        <button class="close-btn" data-modal-close="modal-urgent-priority"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm" style="margin-bottom: 1.1rem; color: var(--slate-700);">
+          Fairness Policy: Tokens are served strictly in creation order by default. Urgent priority moves the token ahead of normal queue requests and requires transparent documentation.
+        </p>
+        <div class="form-group">
+          <label class="form-label">Select Waiting Token to Prioritize</label>
+          <select id="priority-token-select" class="form-control" required>
+            <!-- Injected via staff.js -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Administrative Justification / Approval Authority <span style="color: var(--danger-main);">*</span></label>
+          <input type="text" id="priority-reason-input" class="form-control" placeholder="e.g. Dean verbal approval for hospital admission, Visa deadline" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close="modal-urgent-priority">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btn-submit-urgent-priority">
+          <i class="fa-solid fa-bolt"></i> Set High Priority
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/staff.js"></script>
+</body>
+</html>

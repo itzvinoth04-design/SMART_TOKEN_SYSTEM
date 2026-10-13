@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal – QueueLess Campus Queue Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="admin-dashboard.html" class="sidebar-brand">
+          <div class="logo-icon" style="width: 32px; height: 32px; font-size: 1rem; background: linear-gradient(135deg, #0f172a, #334155);">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <span>QueueLess</span>
+          <span class="brand-badge" style="background: #f1f5f9; color: #0f172a;">Admin</span>
+        </a>
+      </div>
+
+      <div class="sidebar-role-indicator" style="background-color: var(--slate-100);">
+        <div class="role-avatar sync-user-initials" style="background: linear-gradient(135deg, #0f172a, #334155);">KN</div>
+        <div class="role-info">
+          <div class="role-name sync-user-name">Dr. K. Narayanan</div>
+          <div class="role-title-tag sync-user-dept">Dean of Academic Admin</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Administration</div>
+        <a href="#overview" class="nav-link active" data-tab="overview">
+          <div class="nav-left">
+            <i class="fa-solid fa-gauge"></i>
+            <span>System Overview</span>
+          </div>
+        </a>
+        <a href="#services" class="nav-link" data-tab="services">
+          <div class="nav-left">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Service Management</span>
+          </div>
+          <span class="nav-badge" id="admin-badge-services-count">16</span>
+        </a>
+        <a href="#staff" class="nav-link" data-tab="staff">
+          <div class="nav-left">
+            <i class="fa-solid fa-user-group"></i>
+            <span>Staff & Counters</span>
+          </div>
+          <span class="nav-badge" id="admin-badge-staff-count">4</span>
+        </a>
+        <a href="#analytics" class="nav-link" data-tab="analytics">
+          <div class="nav-left">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Queue Analytics</span>
+          </div>
+        </a>
+        <a href="#settings" class="nav-link" data-tab="settings">
+          <div class="nav-left">
+            <i class="fa-solid fa-sliders"></i>
+            <span>System Settings</span>
+          </div>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="btn btn-secondary btn-sm" data-action-logout style="width: 100%; justify-content: flex-start;">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Top Navbar -->
+      <header class="top-navbar">
+        <div class="nav-left-bar">
+          <button type="button" class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Open menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-breadcrumb">
+            <span>Administration</span>
+            <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+            <span class="current">System Overview</span>
+          </div>
+        </div>
+
+        <div class="nav-right-bar">
+          <!-- Role Switcher Dropdown (Demo Helper) -->
+          <div class="role-switcher-dropdown">
+            <button class="role-switcher-btn" id="role-switch-pill" title="Switch Demo View">
+              <i class="fa-solid fa-shield-halved" style="color: var(--slate-900);"></i>
+              <span>Role: <strong>Admin</strong></span>
+              <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem;"></i>
+            </button>
+            <div class="notifications-dropdown" id="role-menu-dropdown" style="width: 200px; padding: 0.4rem;">
+              <a href="#" class="nav-link" data-switch-role="Student" style="font-size: 0.82rem; padding: 0.5rem;"><i class="fa-solid fa-user-graduate"></i> Student View</a>
+              <a href="#" class="nav-link" data-switch-role="Staff" style="font-size: 0.82rem; padding: 0.5rem;"><i class="fa-solid fa-user-tie"></i> Staff View</a>
+              <a href="#" class="nav-link" data-switch-role="Admin" style="font-size: 0.82rem; padding: 0.5rem;"><i class="fa-solid fa-shield-halved"></i> Admin View</a>
+            </div>
+          </div>
+
+          <!-- Notification Bell -->
+          <div class="notification-menu-wrapper">
+            <button class="nav-icon-btn" id="notif-bell-btn" aria-label="Notifications">
+              <i class="fa-regular fa-bell"></i>
+              <span class="notif-badge-count" id="notif-badge-count" style="display: none;">0</span>
+            </button>
+
+            <!-- Dropdown -->
+            <div class="notifications-dropdown" id="notifications-dropdown">
+              <div class="dropdown-header">
+                <h4>System Audit Notifications</h4>
+                <button type="button" id="btn-mark-all-read" style="font-size: 0.72rem; color: var(--primary-600); font-weight: 600;">Mark read</button>
+              </div>
+              <div class="notifications-list" id="notifications-dropdown-list">
+                <!-- Injected via app.js -->
+              </div>
+              <div class="dropdown-footer">
+                <span class="text-xs text-muted">Admin logs</span>
+                <button type="button" id="btn-clear-notifications">Clear</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Menu -->
+          <div class="user-profile-menu">
+            <div class="user-avatar-sm sync-user-initials" style="background: linear-gradient(135deg, #0f172a, #334155);">KN</div>
+            <div class="user-meta-sm">
+              <span class="name sync-user-name">Dr. K. Narayanan</span>
+              <span class="dept">Dean of Administration</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Body Container -->
+      <main class="content-body">
+        
+        <!-- =================================================================
+             VIEW 1: SYSTEM OVERVIEW
+             ================================================================= -->
+        <section class="view-pane active" id="view-overview">
+          
+          <div class="view-header">
+            <div class="view-title-group">
+              <h2>Campus Queue Control Command</h2>
+              <p>Real-time institutional queue load, active tokens, and operational throughput</p>
+            </div>
+            <div style="display: flex; gap: 0.6rem;">
+              <button class="btn btn-secondary btn-sm" id="btn-admin-sync">
+                <i class="fa-solid fa-arrows-rotate"></i> Sync Metrics
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI Metrics (6 Required) -->
+          <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <div class="stat-card">
+              <div class="stat-icon green">
+                <i class="fa-solid fa-users-viewfinder"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value" id="admin-kpi-served-today">76</span>
+                <span class="stat-label">Students Served Today</span>
+                <span class="stat-trend trend-up"><i class="fa-solid fa-arrow-trend-up"></i> +14% vs yesterday</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon amber">
+                <i class="fa-solid fa-ticket"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value" id="admin-kpi-active-tokens">8</span>
+                <span class="stat-label">Total Active Tokens</span>
+                <span class="stat-trend text-muted"><i class="fa-solid fa-clock"></i> In queue / processing</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon blue">
+                <i class="fa-solid fa-stopwatch"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value" id="admin-kpi-avg-wait">5.4 min</span>
+                <span class="stat-label">Average Wait Time</span>
+                <span class="stat-trend trend-down"><i class="fa-solid fa-check"></i> Below 8 min SLA</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon violet">
+                <i class="fa-solid fa-desktop"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value" id="admin-kpi-total-counters">4</span>
+                <span class="stat-label">Total Counters</span>
+                <span class="stat-trend trend-up"><i class="fa-solid fa-circle-check"></i> All 4 active</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon amber">
+                <i class="fa-solid fa-hourglass-half"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value" id="admin-kpi-pending-requests">6</span>
+                <span class="stat-label">Waiting in Queue</span>
+                <span class="stat-trend text-muted"><i class="fa-solid fa-users"></i> Real-time load</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon red">
+                <i class="fa-solid fa-fire"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value">11 AM - 1 PM</span>
+                <span class="stat-label">Peak-Hour Indicator</span>
+                <span class="stat-trend trend-down"><i class="fa-solid fa-chart-line"></i> Highest student rush</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Overview Secondary Section: Live Active Queues Overview -->
+          <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+            
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <i class="fa-solid fa-bolt" style="color: var(--primary-600);"></i>
+                  <span>Live Queue Status by Counter Desk</span>
+                </div>
+              </div>
+              <div class="table-responsive" style="border: none;">
+                <table class="custom-table" id="admin-counters-summary-table">
+                  <thead>
+                    <tr>
+                      <th>Desk</th>
+                      <th>Department</th>
+                      <th>Assigned Staff</th>
+                      <th>Current Token</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-counters-summary-tbody">
+                    <!-- Injected via admin.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <i class="fa-solid fa-chart-simple"></i>
+                  <span>Queue Demand Quick Breakdown</span>
+                </div>
+              </div>
+              <div class="css-bar-chart" id="admin-quick-breakdown-chart">
+                <!-- CSS bar chart injected via admin.js -->
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- =================================================================
+             VIEW 2: SERVICE MANAGEMENT
+             ================================================================= -->
+        <section class="view-pane" id="view-services">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h2>College Services Management</h2>
+              <p>Configure durations, maximum capacity, prefixes, and toggle service availability</p>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btn-admin-add-service-modal">
+              <i class="fa-solid fa-plus"></i> Add New Service
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <div class="table-filter-header">
+              <div class="search-input-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="admin-services-search" placeholder="Search service name or department...">
+              </div>
+            </div>
+
+            <table class="custom-table" id="admin-services-table">
+              <thead>
+                <tr>
+                  <th>Prefix</th>
+                  <th>Service Name</th>
+                  <th>Department</th>
+                  <th>Avg Duration</th>
+                  <th>Max Capacity</th>
+                  <th>Queue Today</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-services-table-body">
+                <!-- Injected via admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             VIEW 3: STAFF & COUNTER MANAGEMENT
+             ================================================================= -->
+        <section class="view-pane" id="view-staff">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h2>Staff Accounts & Desk Allocation</h2>
+              <p>Assign administrative personnel to departments and specific service counter desks</p>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btn-admin-add-staff-modal">
+              <i class="fa-solid fa-user-plus"></i> Add Staff Account
+            </button>
+          </div>
+
+          <div class="card" style="margin-bottom: 1.8rem;">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-users"></i> Staff Workload & Assignment
+              </div>
+            </div>
+            <div class="table-responsive" style="border: none;">
+              <table class="custom-table" id="admin-staff-management-table">
+                <thead>
+                  <tr>
+                    <th>Staff Officer</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Assigned Counter</th>
+                    <th>Served Today</th>
+                    <th>Avg Service Time</th>
+                    <th>Account Status</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-staff-management-tbody">
+                  <!-- Injected via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Counter Hardware / Desk Config -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-desktop"></i> Campus Service Desks Configuration
+              </div>
+            </div>
+            <div class="table-responsive" style="border: none;">
+              <table class="custom-table" id="admin-counters-config-table">
+                <thead>
+                  <tr>
+                    <th>Counter #</th>
+                    <th>Desk Name</th>
+                    <th>Department</th>
+                    <th>Assigned Officer</th>
+                    <th>Serving Status</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-counters-config-tbody">
+                  <!-- Injected via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             VIEW 4: QUEUE ANALYTICS
+             ================================================================= -->
+        <section class="view-pane" id="view-analytics">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h2>Campus Queue Analytics & Performance Trends</h2>
+              <p>Turnaround time, peak load distribution, and departmental efficiency reports</p>
+            </div>
+            <div style="display: flex; gap: 0.6rem;">
+              <select id="analytics-date-filter" class="form-control" style="width: 150px; padding: 0.45rem 0.8rem; font-size: 0.82rem;">
+                <option value="today">Today (Live)</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="analytics-grid">
+            <!-- 1. Requests per service -->
+            <div class="chart-card">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Requests Volume per Service</span>
+              </div>
+              <p class="text-xs text-muted">Breakdown of service requests initiated today</p>
+              <div class="css-bar-chart" id="chart-analytics-service-volume">
+                <!-- Injected via admin.js -->
+              </div>
+            </div>
+
+            <!-- 2. Wait times by department -->
+            <div class="chart-card">
+              <div class="card-title">
+                <i class="fa-solid fa-clock"></i>
+                <span>Average Waiting Time by Department</span>
+              </div>
+              <p class="text-xs text-muted">Mean waiting time experienced by students (minutes)</p>
+              <div class="css-bar-chart" id="chart-analytics-wait-by-dept">
+                <!-- Injected via admin.js -->
+              </div>
+            </div>
+
+            <!-- 3. Hourly queue demand -->
+            <div class="chart-card">
+              <div class="card-title">
+                <i class="fa-solid fa-timeline"></i>
+                <span>Hourly Queue Demand Curve</span>
+              </div>
+              <p class="text-xs text-muted">Student footfall across campus office hours</p>
+              <div class="css-bar-chart" id="chart-analytics-hourly-demand">
+                <!-- Injected via admin.js -->
+              </div>
+            </div>
+
+            <!-- 4. Counter Utilization -->
+            <div class="chart-card">
+              <div class="card-title">
+                <i class="fa-solid fa-tachograph-digital"></i>
+                <span>Counter Desk Utilization Rates</span>
+              </div>
+              <p class="text-xs text-muted">Operational throughput vs idle wait time</p>
+              <div class="css-bar-chart" id="chart-analytics-counter-util">
+                <!-- Injected via admin.js -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             VIEW 5: SYSTEM SETTINGS
+             ================================================================= -->
+        <section class="view-pane" id="view-settings">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h2>System Settings & Institutional Rules</h2>
+              <p>Configure campus institution metadata, SLA tolerances, and reset prototype data</p>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem;">
+            
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <i class="fa-solid fa-sliders"></i> System Parameters
+                </div>
+              </div>
+              <form id="form-system-settings">
+                <div class="form-group">
+                  <label class="form-label">College / Academic Institution Name</label>
+                  <input type="text" id="set-college-name" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Institution Tagline & Accreditations</label>
+                  <input type="text" id="set-tagline" class="form-control">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="form-group">
+                    <label class="form-label">Office Opening Hours</label>
+                    <input type="text" id="set-hours" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Service Working Days</label>
+                    <input type="text" id="set-working-days" class="form-control" required>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="form-group">
+                    <label class="form-label">Max Active Tokens Per Student</label>
+                    <input type="number" id="set-max-tokens" class="form-control" min="1" max="10" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Default Service Duration (Mins)</label>
+                    <input type="number" id="set-default-duration" class="form-control" min="1" max="60" required>
+                  </div>
+                </div>
+
+                <div style="margin-top: 1.25rem; display: flex; justify-content: flex-end;">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i> Save System Settings
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Danger Zone & Reset Demo Data -->
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+              <div class="card" style="border-left: 4px solid var(--danger-main);">
+                <div class="card-title" style="color: var(--danger-main); margin-bottom: 0.6rem;">
+                  <i class="fa-solid fa-triangle-exclamation"></i> Reset Prototype Demo Data
+                </div>
+                <p class="text-xs text-muted" style="margin-bottom: 1.2rem; line-height: 1.45;">
+                  Resets LocalStorage back to pristine seed records (all 16 original services, initial 12 sample student tokens, 4 active counters, and realistic test notifications).
+                </p>
+                <button type="button" class="btn btn-danger btn-sm" id="btn-reset-demo-data-trigger">
+                  <i class="fa-solid fa-rotate-left"></i> Reset All Demo Data
+                </button>
+              </div>
+
+              <div class="card">
+                <div class="card-title" style="margin-bottom: 0.6rem;">
+                  <i class="fa-solid fa-circle-info"></i> Prototype Environment
+                </div>
+                <p class="text-xs text-muted" style="line-height: 1.45;">
+                  QueueLess frontend runs entirely within HTML5, CSS3, and JavaScript LocalStorage. Cross-tab synchronization uses browser <code>StorageEvent</code> channels.
+                </p>
+                <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--slate-500);">
+                  Version: <strong>2.4.0 (Autonomous Campus Release)</strong>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       MODAL 1: ADD / EDIT SERVICE MODAL
+       ================================================================= -->
+  <div class="modal-backdrop" id="modal-service-form">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-service-title"><i class="fa-solid fa-file-circle-plus" style="color: var(--primary-600);"></i> Add New College Service</h3>
+        <button class="close-btn" data-modal-close="modal-service-form"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="form-manage-service">
+        <input type="hidden" id="manage-service-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Service Name <span style="color: var(--danger-main);">*</span></label>
+            <input type="text" id="srv-input-name" class="form-control" placeholder="e.g. Migration Certificate" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Department <span style="color: var(--danger-main);">*</span></label>
+              <select id="srv-input-dept" class="form-control" required>
+                <option value="Administrative Office">Administrative Office</option>
+                <option value="Accounts Office">Accounts Office</option>
+                <option value="Examination Cell">Examination Cell</option>
+                <option value="Student Affairs">Student Affairs</option>
+                <option value="Student Support">Student Support</option>
+                <option value="Hostel Office">Hostel Office</option>
+                <option value="Transport Office">Transport Office</option>
+                <option value="Library">Library</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Token Code Prefix <span style="color: var(--danger-main);">*</span></label>
+              <input type="text" id="srv-input-prefix" class="form-control" placeholder="e.g. MIG, CERT" maxlength="6" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Service Description</label>
+            <textarea id="srv-input-desc" class="form-control" rows="2" placeholder="Brief explanation for students..."></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Avg Duration (Minutes) <span style="color: var(--danger-main);">*</span></label>
+              <input type="number" id="srv-input-duration" class="form-control" min="1" max="60" value="6" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Max Daily Queue Capacity <span style="color: var(--danger-main);">*</span></label>
+              <input type="number" id="srv-input-capacity" class="form-control" min="5" max="300" value="50" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 0.88rem; font-weight: 600;">
+              <input type="checkbox" id="srv-input-active" checked style="accent-color: var(--primary-600); width: 18px; height: 18px;">
+              <span>Service Enabled and Accepting Tokens</span>
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-modal-close="modal-service-form">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-service">Save Service</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       MODAL 2: ADD / EDIT STAFF MODAL
+       ================================================================= -->
+  <div class="modal-backdrop" id="modal-staff-form">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-staff-title"><i class="fa-solid fa-user-plus" style="color: var(--primary-600);"></i> Add Staff Demo Account</h3>
+        <button class="close-btn" data-modal-close="modal-staff-form"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="form-manage-staff">
+        <input type="hidden" id="manage-staff-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Staff Officer Full Name <span style="color: var(--danger-main);">*</span></label>
+            <input type="text" id="stf-input-name" class="form-control" placeholder="e.g. Mr. Anand Mohan" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">College Email ID <span style="color: var(--danger-main);">*</span></label>
+            <input type="email" id="stf-input-email" class="form-control" placeholder="anand.m@college.edu" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Department <span style="color: var(--danger-main);">*</span></label>
+              <select id="stf-input-dept" class="form-control" required>
+                <option value="Administrative Office">Administrative Office</option>
+                <option value="Accounts Office">Accounts Office</option>
+                <option value="Examination Cell">Examination Cell</option>
+                <option value="Student Support">Student Support</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Assign to Counter</label>
+              <select id="stf-input-counter" class="form-control">
+                <option value="cnt-1">Counter 1 – Certificate Section</option>
+                <option value="cnt-2">Counter 2 – Accounts & Finance</option>
+                <option value="cnt-3">Counter 3 – Examination Cell</option>
+                <option value="cnt-4">Counter 4 – Student Support</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-modal-close="modal-staff-form">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Staff Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       MODAL 3: RESET CONFIRMATION MODAL
+       ================================================================= -->
+  <div class="modal-backdrop" id="modal-confirm-reset">
+    <div class="modal-card" style="max-width: 460px;">
+      <div class="modal-header" style="background-color: var(--danger-bg); border-bottom-color: var(--danger-border);">
+        <h3 style="color: var(--danger-text);"><i class="fa-solid fa-triangle-exclamation"></i> Confirm Factory Reset</h3>
+        <button class="close-btn" data-modal-close="modal-confirm-reset"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm" style="color: var(--slate-700); margin-bottom: 0.75rem;">
+          This action will restore all LocalStorage records to default seed data:
+        </p>
+        <ul style="font-size: 0.8rem; color: var(--slate-600); margin-left: 1.25rem; line-height: 1.5;">
+          <li>16 Default College Services</li>
+          <li>4 Campus Counter Desks</li>
+          <li>12 Realistic Student Demo Tokens</li>
+          <li>Original Student Profile and Notifications</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close="modal-confirm-reset">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btn-confirm-execute-reset">
+          <i class="fa-solid fa-rotate-left"></i> Yes, Reset Data
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
